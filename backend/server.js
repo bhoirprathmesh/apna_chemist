@@ -3,9 +3,11 @@ const app = express();
 require("dotenv").config();
 require("./conn/conn");
 
-app.get("/", (req, res) => {
-  res.send("Backend is working");
-});
+app.use(express.json()); //  Parse JSON request body
+
+const user = require("./routes/user");
+
+app.use("/api/v1", user);
 
 app.listen(process.env.PORT,()=>{
   console.log(`Server is running on port ${process.env.PORT}`);
