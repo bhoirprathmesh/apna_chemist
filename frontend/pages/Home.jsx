@@ -1,9 +1,9 @@
 import React from 'react'
-
+import Hero from '../components/home/Hero'
 function Home() {
   return (
     <div>
-      <h1>Hello World</h1>
+      <Hero/>
     </div>
   )
 }
