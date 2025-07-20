@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { FiMapPin, FiSettings, FiShoppingCart, FiSearch } from 'react-icons/fi';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 
@@ -10,8 +11,10 @@ const Header = () => {
         <div className="flex items-center space-x-8">
           {/* Logo */}
           <div>
-            <img src="/logo.jpg" alt="Logo" className="h-10" />
-          </div>
+         <Link to="/">
+           <img src="/logo.jpg" alt="Logo" className="h-10 cursor-pointer" />
+         </Link>
+              </div>
 
           {/* Delivery Address */}
           <div className="flex items-center text-sm text-gray-700">
@@ -44,9 +47,12 @@ const Header = () => {
             <span className="absolute -top-2 -right-2 text-xs text-white bg-red-500 rounded-full px-1">0</span>
           </div>
 
-          <button className="text-sm px-4 py-1.5 bg-teal-600 text-white rounded-full hover:bg-teal-700 transition">
-            Login
-          </button>
+          {/* Login Button as Link */}
+          <Link to="/login">
+            <button className="text-sm px-4 py-1.5 bg-teal-600 text-white rounded-full hover:bg-teal-700 transition">
+              Login
+            </button>
+          </Link>
         </div>
       </div>
 
