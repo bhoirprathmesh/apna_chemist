@@ -41,11 +41,12 @@ const Header = () => {
         {/* Right: Settings, Cart, Login */}
         <div className="flex items-center space-x-6 text-xl text-gray-700">
           <FiSettings className="hover:text-teal-600 cursor-pointer" />
-
+           <Link to = "/cart">
           <div className="relative cursor-pointer">
             <FiShoppingCart className="hover:text-teal-600" />
             <span className="absolute -top-2 -right-2 text-xs text-white bg-red-500 rounded-full px-1">0</span>
           </div>
+           </Link>
 
           {/* Login Button as Link */}
           <Link to="/login">

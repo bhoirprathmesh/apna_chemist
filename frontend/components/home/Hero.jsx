@@ -1,5 +1,4 @@
 import React from 'react';
-import { FaWhatsapp } from 'react-icons/fa';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 
 function Hero() {
@@ -15,30 +14,7 @@ function Hero() {
 
   return (
     <div className="w-full min-h-screen bg-white px-6 py-4">
-      {/* Top nav links */}
-      <div className="flex justify-evenly flex-wrap items-center w-full max-w-6xl mx-auto gap-2 mb-6">
-        <a href="#" className="px-4 py-2 bg-teal-600 text-white rounded-full hover:bg-teal-700 text-sm">
-          All Medicines
-        </a>
-        <a href="#" className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 text-sm">
-          Offers
-        </a>
-        <a href="#" className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 text-sm">
-          Store Locator
-        </a>
-        <a
-          href="https://wa.me/919999999999"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="px-4 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 text-sm flex items-center gap-1"
-        >
-          <FaWhatsapp className="text-lg" />
-          WhatsApp Connect
-        </a>
-        <a href="#" className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 text-sm">
-          Blogs
-        </a>
-      </div>
+      
 
       {/* 🔽 Hoverable Dropdowns Section */}
       <div className="flex justify-center flex-wrap items-center gap-4 mb-12 relative z-10">
