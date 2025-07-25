@@ -1,9 +1,65 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FiMapPin, FiSettings, FiShoppingCart, FiSearch } from 'react-icons/fi';
-import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  FiMapPin,
+  FiSettings,
+  FiShoppingCart,
+  FiSearch,
+} from "react-icons/fi";
+import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 
 const Header = () => {
+  const [locations, setLocation] = useState("");
+
+  useEffect(() => {
+    document.documentElement.classList.remove("no-js");
+
+    if (navigator.geolocation) {
+      const options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0,
+      };
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+
+          fetch(
+            `https://api.mapbox.com/geocoding/v5/mapbox.places/${lon},${lat}.json?access_token=pk.eyJ1Ijoic2h1ZW5jZSIsImEiOiJjbG9wcmt3czMwYnZsMmtvNnpmNTRqdnl6In0.vLBhYMBZBl2kaOh1Fh44Bw`
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              const cityFeature = data.features.find((context) =>
+                context.place_type.includes("place")
+              );
+              const stateFeature = data.features.find((context) =>
+                context.place_type.includes("region")
+              );
+              const city = cityFeature ? cityFeature.text : "";
+              const state = stateFeature ? stateFeature.text : "";
+              setLocation(
+                city && state ? `${city}, ${state}` : "Location not found"
+              );
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              setLocation("Unable to retrieve location");
+            });
+        },
+        (error) => {
+          console.error(error);
+          setLocation("Geolocation not enabled");
+        },
+        options
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+      setLocation("Geolocation not supported");
+    }
+  }, []);
+
   return (
     <>
       <div className="w-full px-6 py-3 flex items-center justify-between bg-white">
@@ -11,10 +67,10 @@ const Header = () => {
         <div className="flex items-center space-x-8">
           {/* Logo */}
           <div>
-         <Link to="/">
-           <img src="/logo.jpg" alt="Logo" className="h-10 cursor-pointer" />
-         </Link>
-              </div>
+            <Link to="/">
+              <img src="/logo.jpg" alt="Logo" className="h-10 cursor-pointer" />
+            </Link>
+          </div>
 
           {/* Delivery Address */}
           <div className="flex items-center text-sm text-gray-700">
@@ -22,7 +78,9 @@ const Header = () => {
             <div>
               <div className="text-xs text-gray-500">Delivery Address</div>
               <div className="flex items-center font-medium">
-                Bhiwandi 421302 <MdOutlineKeyboardArrowDown className="ml-1" />
+                <h5>
+                  {locations || "Loading..."}
+                </h5><MdOutlineKeyboardArrowDown className="ml-1" />
               </div>
             </div>
           </div>
@@ -41,12 +99,14 @@ const Header = () => {
         {/* Right: Settings, Cart, Login */}
         <div className="flex items-center space-x-6 text-xl text-gray-700">
           <FiSettings className="hover:text-teal-600 cursor-pointer" />
-           <Link to = "/cart">
-          <div className="relative cursor-pointer">
-            <FiShoppingCart className="hover:text-teal-600" />
-            <span className="absolute -top-2 -right-2 text-xs text-white bg-red-500 rounded-full px-1">0</span>
-          </div>
-           </Link>
+          <Link to="/cart">
+            <div className="relative cursor-pointer">
+              <FiShoppingCart className="hover:text-teal-600" />
+              <span className="absolute -top-2 -right-2 text-xs text-white bg-red-500 rounded-full px-1">
+                0
+              </span>
+            </div>
+          </Link>
 
           {/* Login Button as Link */}
           <Link to="/login">
