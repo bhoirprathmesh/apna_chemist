@@ -12,7 +12,7 @@ import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Cart from "../pages/Cart";
 import Loader from "../components/Loader";
-import Navlink from "../components/home/Navlink";
+import Navlink from "../components/Navlink";
 
 function AppContent() {
   const location = useLocation();
