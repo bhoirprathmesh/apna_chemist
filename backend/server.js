@@ -1,16 +1,25 @@
 const express = require("express");
+const cors = require("cors"); // ← import cors
 const app = express();
 require("dotenv").config();
 require("./conn/conn");
 
-app.use(express.json()); //  Parse JSON request body
+// Enable CORS
+app.use(cors({
+  origin: "http://localhost:5173", // your frontend origin
+  credentials: true
+}));
 
+app.use(express.json()); // Parse JSON body
+
+// Routes
 const user = require("./routes/user");
 const cart = require("./routes/cart");
 
 app.use("/api/v1", user);
 app.use("/api/v1", cart);
 
-app.listen(process.env.PORT,()=>{
+// Start server
+app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);
 });

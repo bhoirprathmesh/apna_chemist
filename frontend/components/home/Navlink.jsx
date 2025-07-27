@@ -5,40 +5,37 @@ function Navlink() {
   return (
     <div className="py-4 px-2 bg-white">
       {/* Top nav links container */}
-      <div className="flex justify-evenly flex-wrap items-center w-full max-w-6xl mx-auto gap-3">
-        <a
-          href="#"
-          className="px-4 py-2 bg-teal-600 text-white rounded-full hover:bg-teal-700 text-sm transition duration-200"
-        >
-          All Medicines
-        </a>
-        <a
-          href="#"
-          className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 text-sm transition duration-200"
-        >
-          Offers
-        </a>
-        <a
-          href="#"
-          className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 text-sm transition duration-200"
-        >
-          Store Locator
-        </a>
-        <a
-          href="https://wa.me/919999999999"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="px-4 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 text-sm flex items-center gap-2 transition duration-200"
-        >
-          <FaWhatsapp className="text-lg" />
-          WhatsApp Connect
-        </a>
-        <a
-          href="#"
-          className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 text-sm transition duration-200"
-        >
-          Blogs
-        </a>
+      <div className="flex justify-center flex-wrap items-center gap-3 max-w-6xl mx-auto">
+        {[
+          { label: "All Medicines", href: "#", type: "primary" },
+          { label: "Offers", href: "#", type: "secondary" },
+          { label: "Store Locator", href: "#", type: "secondary" },
+          {
+            label: "WhatsApp Connect",
+            href: "https://wa.me/919999999999",
+            type: "whatsapp",
+            icon: <FaWhatsapp className="text-lg" />,
+            external: true,
+          },
+          { label: "Blogs", href: "#", type: "secondary" },
+        ].map((link, i) => (
+          <a
+            key={i}
+            href={link.href}
+            target={link.external ? "_blank" : "_self"}
+            rel={link.external ? "noopener noreferrer" : undefined}
+            className={`flex items-center gap-2 px-4 py-2 text-sm rounded-full transition duration-200 ${
+              link.type === "primary"
+                ? "bg-teal-600 text-white hover:bg-teal-700"
+                : link.type === "whatsapp"
+                ? "bg-green-500 text-white hover:bg-green-600"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
+          >
+            {link.icon}
+            {link.label}
+          </a>
+        ))}
       </div>
     </div>
   );

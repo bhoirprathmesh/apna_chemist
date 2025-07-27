@@ -13,10 +13,9 @@ const Header = () => {
   const [locations, setLocation] = useState("");
   const { t, i18n } = useTranslation();
 
-  // Change language
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
-    localStorage.setItem("language", lang); // Save language
+    localStorage.setItem("language", lang);
   };
 
   useEffect(() => {
@@ -70,14 +69,13 @@ const Header = () => {
 
   return (
     <>
-      <div className="w-full px-6 py-3 flex items-center justify-between bg-white">
-        {/* Left: Logo + Address */}
-        <div className="flex items-center space-x-8">
-          <div>
-            <Link to="/">
-              <img src="/logo.jpg" alt="Logo" className="h-10 cursor-pointer" />
-            </Link>
-          </div>
+      <div className="w-full px-4 sm:px-6 py-3 flex flex-col lg:flex-row items-center justify-between bg-white gap-y-4">
+        {/* Top Section: Logo + Address */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-start gap-4 w-full lg:w-auto">
+          {/* Logo */}
+          <Link to="/">
+            <img src="/logo.jpg" alt="Logo" className="h-10 cursor-pointer" />
+          </Link>
 
           {/* Delivery Address */}
           <div className="flex items-center text-sm text-gray-700">
@@ -86,15 +84,15 @@ const Header = () => {
               <div className="text-xs text-gray-500">
                 {t("deliveryAddress")}
               </div>
-              <div className="flex items-center font-medium">
+              <div className="font-medium">
                 <h5>{locations || t("loading")}</h5>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Center: Search Bar */}
-        <div className="w-[30rem] relative">
+        {/* Search Bar - hide on small screens */}
+        <div className="relative w-full sm:w-[20rem] md:w-[30rem] hidden sm:block">
           <input
             type="text"
             placeholder={t("searchPlaceholder")}
@@ -103,15 +101,15 @@ const Header = () => {
           <FiSearch className="absolute top-2.5 left-3 text-gray-500 text-lg" />
         </div>
 
-        {/* Right: Language, Settings, Cart, Login */}
-        <div className="flex items-center space-x-6 text-xl text-gray-700">
-          {/* Language Selector with Icon */}
+        {/* Right Side Icons and Buttons */}
+        <div className="flex items-center justify-end space-x-4 w-full lg:w-auto text-xl text-gray-700">
+          {/* Language Selector */}
           <div className="flex items-center space-x-2">
             <FiGlobe className="text-gray-600 text-lg" />
             <select
               onChange={(e) => changeLanguage(e.target.value)}
-              className="border border-gray-300 rounded-full text-sm px-3 py-1.5 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-400 cursor-pointer"
-              value={i18n.language} // Ensures correct language is selected after refresh
+              className="border border-gray-300 rounded-full text-sm px-3 py-1.5 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-400"
+              value={i18n.language}
             >
               <option value="en">English</option>
               <option value="hi">हिन्दी</option>
@@ -119,7 +117,10 @@ const Header = () => {
             </select>
           </div>
 
-          <FiSettings className="hover:text-teal-600 cursor-pointer" />
+          {/* Settings Icon */}
+          <FiSettings className="hover:text-teal-600 cursor-pointer hidden sm:inline" />
+
+          {/* Cart Icon */}
           <Link to="/cart">
             <div className="relative cursor-pointer">
               <FiShoppingCart className="hover:text-teal-600" />
@@ -128,6 +129,8 @@ const Header = () => {
               </span>
             </div>
           </Link>
+
+          {/* Login Button */}
           <Link to="/login">
             <button className="text-sm px-4 py-1.5 bg-teal-600 text-white rounded-full hover:bg-teal-700 transition">
               {t("login")}

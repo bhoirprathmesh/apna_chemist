@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
-import { Link } from 'react-router-dom'; // use only if you're using React Router
+import { Link } from 'react-router-dom';
 
-const LoginForm = () => {
+const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePassword = () => setShowPassword(!showPassword);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-md p-8">
-        <h2 className="text-2xl font-semibold text-teal-700 mb-6 text-center">Login to Your Account</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-sm sm:max-w-md bg-white rounded-xl shadow-md p-6 sm:p-8">
+        <h2 className="text-2xl font-semibold text-teal-700 mb-6 text-center">
+          Login to Your Account
+        </h2>
 
         <form className="space-y-5">
           {/* Email */}
@@ -75,4 +77,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default Login;

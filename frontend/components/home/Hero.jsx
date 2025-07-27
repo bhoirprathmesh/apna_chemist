@@ -13,26 +13,26 @@ function Hero() {
   ];
 
   return (
-    <div className="w-full min-h-screen bg-white px-6 py-4">
-      
-
-      {/* 🔽 Hoverable Dropdowns Section */}
-      <div className="flex justify-center flex-wrap items-center gap-4 mb-12 relative z-10">
+    <div className="w-full min-h-screen bg-white px-4 md:px-6 py-6">
+      {/* Dropdown Category Buttons */}
+      <div className="flex justify-center flex-wrap gap-3 mb-12 relative z-10">
         {categories.map((cat, idx) => (
           <div key={idx} className="relative group">
             <button
-              className="px-4 py-2 bg-gray-100 text-gray-800 rounded-full hover:bg-gray-200 text-sm flex items-center gap-1"
+              className="px-4 py-2 bg-gray-100 text-gray-800 rounded-full hover:bg-gray-200 text-sm flex items-center gap-1 focus:outline-none"
+              aria-haspopup="true"
+              aria-expanded="false"
             >
               {cat.label} <MdKeyboardArrowDown />
             </button>
 
-            {/* Dropdown menu on hover */}
-            <div className="absolute top-12 left-0 hidden group-hover:block bg-gray-50 border shadow-lg rounded-lg p-3 text-sm min-w-[180px] z-20">
+            {/* Dropdown menu */}
+            <div className="absolute top-12 left-0 hidden group-hover:block bg-white border border-gray-200 shadow-lg rounded-lg py-2 w-48 z-30">
               {cat.items.map((item, i) => (
                 <a
                   key={i}
                   href="#"
-                  className="block py-1 px-2 rounded hover:bg-teal-100 text-gray-700"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-teal-100"
                 >
                   {item}
                 </a>
@@ -42,10 +42,12 @@ function Hero() {
         ))}
       </div>
 
-      {/* Hero Section Content */}
-      <div className="flex flex-col items-center justify-center h-[calc(100vh-20rem)] text-center">
-        <h1 className="text-4xl font-bold text-teal-700 mb-4">Welcome to Our Pharmacy</h1>
-        <p className="text-gray-600 max-w-xl">
+      {/* Hero Main Text */}
+      <div className="flex flex-col items-center justify-center text-center h-[calc(100vh-22rem)] px-4">
+        <h1 className="text-3xl sm:text-4xl font-bold text-teal-700 mb-4">
+          Welcome to Our Pharmacy
+        </h1>
+        <p className="text-gray-600 max-w-xl text-base sm:text-lg">
           Get genuine medicines, exciting offers, expert advice, and fast delivery all in one place.
         </p>
       </div>

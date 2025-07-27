@@ -33,6 +33,9 @@ async function sendOtp(user, otp) {
  
 }
 
+//  Signup Rout
+
+// POST /api/v1/sign-up
 //  Signup Route
 router.post("/sign-up", async (req, res) => {
   try {
@@ -78,7 +81,9 @@ router.post("/sign-up", async (req, res) => {
     console.log(error);
     return res.status(500).json({ message: "Internal server error" });
   }
-});
+}); 
+
+
 
 // Login Step 1: Verify username + password and send OTP
 router.post("/login-in", async (req, res) => {

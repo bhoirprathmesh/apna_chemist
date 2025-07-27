@@ -3,8 +3,8 @@ import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/f
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-100 text-gray-700 pt-10 pb-6 px-6 md:px-20">
-      <div className="grid md:grid-cols-4 gap-8">
+    <footer className="bg-gray-100 text-gray-700 pt-10 pb-6 px-4 sm:px-6 md:px-20">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
         {/* Column 1: Logo + Description */}
         <div>
           <img src="/logo.jpg" alt="Pharmacy Logo" className="h-12 mb-3" />
@@ -43,11 +43,11 @@ const Footer = () => {
           <p className="text-sm mb-2">Email: support@pharmacy.com</p>
           <p className="text-sm mb-4">Phone: +91 98765 43210</p>
 
-          <div className="flex space-x-4 text-white">
-            <a href="#" className="bg-blue-600 p-2 rounded-full hover:bg-blue-700"><FaFacebookF /></a>
-            <a href="#" className="bg-sky-400 p-2 rounded-full hover:bg-sky-500"><FaTwitter /></a>
-            <a href="#" className="bg-pink-500 p-2 rounded-full hover:bg-pink-600"><FaInstagram /></a>
-            <a href="#" className="bg-blue-700 p-2 rounded-full hover:bg-blue-800"><FaLinkedinIn /></a>
+          <div className="flex flex-wrap gap-3 sm:gap-4">
+            <a href="#" className="bg-blue-600 p-2 rounded-full hover:bg-blue-700 text-white text-sm"><FaFacebookF /></a>
+            <a href="#" className="bg-sky-400 p-2 rounded-full hover:bg-sky-500 text-white text-sm"><FaTwitter /></a>
+            <a href="#" className="bg-pink-500 p-2 rounded-full hover:bg-pink-600 text-white text-sm"><FaInstagram /></a>
+            <a href="#" className="bg-blue-700 p-2 rounded-full hover:bg-blue-800 text-white text-sm"><FaLinkedinIn /></a>
           </div>
         </div>
       </div>

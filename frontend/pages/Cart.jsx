@@ -6,24 +6,23 @@ function Cart() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
-        
+    <div className="min-h-screen flex items-center justify-center bg-white px-4 sm:px-6">
       {cartItems.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-16">
+        <div className="flex flex-col items-center text-center py-16 max-w-md mx-auto">
           <img
-            src="/cart.jpg" 
+            src="/cart.jpg"
             alt="Empty cart"
-            className="w-48 h-48 mb-6"
+            className="w-36 sm:w-48 mb-6"
           />
-          <p className="text-lg text-gray-700 mb-4 text-center">
+          <p className="text-lg text-gray-700 mb-4">
             Looks like your cart is empty and sad... <br />
             Add Items to cheer it up !!
           </p>
           <button
-            className="bg-blue-700 text-white px-6 py-2 rounded hover:bg-blue-800"
             onClick={() => navigate('/')}
+            className="bg-blue-700 text-white px-6 py-2 rounded-md hover:bg-blue-800 transition"
           >
-            Go to pharmacy 
+            Go to Pharmacy
           </button>
         </div>
       ) : (
