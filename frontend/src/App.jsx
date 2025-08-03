@@ -12,6 +12,7 @@ import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Cart from "../pages/Cart";
 import Loader from "../components/Loader";
+import OTP from "../pages/otp";
 import Navlink from "../components/Navlink";
 
 function AppContent() {
@@ -35,6 +36,8 @@ function AppContent() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/otp" element={<OTP />} />
+
       </Routes>
       <Footer />
     </div>

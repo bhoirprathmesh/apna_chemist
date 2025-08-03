@@ -78,6 +78,7 @@ router.post("/login-in", async (req, res) => {
 
     // Generate a 6-digit verification code (OTP)
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpExpiry = new Date(Date.now() + 60 * 1000); // 1 minute from now
 
     // Store it in the user's document (for now without expiry)
     user.verificationCode = verificationCode;
@@ -94,6 +95,46 @@ router.post("/login-in", async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 });
+router.post("/verify-otp", async (req, res) => {
+  try {
+    const { email, verificationCode } = req.body;
+
+    console.log("Verifying OTP for:", email);
+    console.log("Entered OTP:", verificationCode);
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      console.log("User not found");
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    console.log("Stored OTP:", user.verificationCode);
+    console.log("OTP expiry:", user.otpExpiresAt);
+
+    if (user.verificationCode !== verificationCode) {
+      console.log("OTP mismatch");
+      return res.status(400).json({ message: "Invalid OTP" });
+    }
+
+    if (!user.otpExpiresAt || new Date() > user.otpExpiresAt) {
+      console.log("OTP expired");
+      return res.status(400).json({ message: "OTP expired" });
+    }
+
+    user.isVerified = true;
+    user.verificationCode = null;
+    user.otpExpiresAt = null;
+    await user.save();
+
+    console.log("OTP verified successfully");
+    return res.status(200).json({ message: "OTP verified successfully" });
+  } catch (error) {
+    console.error("OTP verification error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 
 module.exports = router;
 

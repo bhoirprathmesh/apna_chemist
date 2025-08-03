@@ -25,9 +25,9 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Login successful!");
-        localStorage.setItem("token", data.token); // optional: store JWT token
-        navigate("/"); // redirect after login
+        alert("Verification code sent to your email.");
+        // Navigate to OTP page with email
+        navigate("/otp", { state: { email: data.email } });
       } else {
         alert(data.message || "Login failed");
       }
@@ -38,14 +38,13 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-sm sm:max-w-md bg-white rounded-xl shadow-md p-6 sm:p-8">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="w-full max-w-sm bg-white rounded-xl shadow-md p-6">
         <h2 className="text-2xl font-semibold text-teal-700 mb-6 text-center">
           Login to Your Account
         </h2>
 
         <form className="space-y-5" onSubmit={handleLogin}>
-          {/* Email */}
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
               Email Address
@@ -56,12 +55,11 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-teal-400"
               placeholder="you@example.com"
             />
           </div>
 
-          {/* Password */}
           <div className="relative">
             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
               Password
@@ -72,7 +70,7 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 pr-10"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md pr-10 focus:ring-teal-400"
               placeholder="••••••••"
             />
             <div
@@ -83,14 +81,12 @@ const Login = () => {
             </div>
           </div>
 
-          {/* Forgot Password */}
           <div className="text-right">
             <Link to="/forgot-password" className="text-sm text-teal-600 hover:underline">
               Forgot Password?
             </Link>
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             className="w-full bg-teal-600 hover:bg-teal-700 text-white py-2 rounded-md transition"
@@ -99,7 +95,6 @@ const Login = () => {
           </button>
         </form>
 
-        {/* Footer */}
         <div className="mt-6 text-center text-sm text-gray-600">
           Don’t have an account?{' '}
           <Link to="/signup" className="text-teal-600 font-medium hover:underline">
