@@ -17,8 +17,6 @@ const Header = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const { t, i18n } = useTranslation();
 
-<<<<<<< HEAD
-=======
   const popularSearches = [
     "Paracetamol",
     "Protein Powder",
@@ -37,14 +35,11 @@ const Header = () => {
     "Pet Care",
   ];
 
->>>>>>> d4f975e76cc767f82897a178dbcb3e1e1f6d1009
-  // Change language
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
-    localStorage.setItem("language", lang); // Save language
+    localStorage.setItem("language", lang);
   };
 
-  // Fetch user location
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -80,23 +75,12 @@ const Header = () => {
 
   return (
     <>
-<<<<<<< HEAD
-      <div className="w-full px-6 py-3 flex items-center justify-between bg-white">
-        {/* Left: Logo + Address */}
-        <div className="flex items-center space-x-8">
-          <div>
-            <Link to="/">
-              <img src="/logo.jpg" alt="Logo" className="h-10 cursor-pointer" />
-            </Link>
-          </div>
-=======
       <div className="w-full px-4 md:px-6 py-3 flex items-center justify-between bg-white shadow-md relative">
         {/* Left: Logo & Location */}
         <div className="flex items-center space-x-4 md:space-x-8">
           <Link to="/">
             <img src="/logo.jpg" alt="Logo" className="h-10 cursor-pointer" />
           </Link>
->>>>>>> d4f975e76cc767f82897a178dbcb3e1e1f6d1009
 
           {/* Location (Hidden on mobile) */}
           <div className="hidden md:flex items-center text-sm text-gray-700">
@@ -105,24 +89,15 @@ const Header = () => {
               <div className="text-xs text-gray-500">
                 {t("deliveryAddress")}
               </div>
-<<<<<<< HEAD
               <div className="flex items-center font-medium">
                 <h5>{locations || t("loading")}</h5>
               </div>
-=======
-              <h5 className="font-medium">{locations || t("loading")}</h5>
->>>>>>> d4f975e76cc767f82897a178dbcb3e1e1f6d1009
             </div>
           </div>
         </div>
 
-<<<<<<< HEAD
         {/* Center: Search Bar */}
-        <div className="w-[30rem] relative">
-=======
-        {/* Center: Search (hidden on mobile) */}
         <div className="hidden md:block w-[25rem] lg:w-[30rem] relative">
->>>>>>> d4f975e76cc767f82897a178dbcb3e1e1f6d1009
           <input
             type="text"
             placeholder={t("searchPlaceholder")}
@@ -131,12 +106,6 @@ const Header = () => {
           <FiSearch className="absolute top-2.5 left-3 text-gray-500 text-lg" />
         </div>
 
-<<<<<<< HEAD
-        {/* Right: Language, Settings, Cart, Login */}
-        <div className="flex items-center space-x-6 text-xl text-gray-700">
-          {/* Language Selector with Icon */}
-          <div className="flex items-center space-x-2">
-=======
         {/* Right: Icons */}
         <div className="flex items-center space-x-4 md:space-x-6 text-xl text-gray-700">
           {/* Mobile Search */}
@@ -147,16 +116,11 @@ const Header = () => {
 
           {/* Language Selector (Desktop Only) */}
           <div className="hidden md:flex items-center space-x-2">
->>>>>>> d4f975e76cc767f82897a178dbcb3e1e1f6d1009
             <FiGlobe className="text-gray-600 text-lg" />
             <select
               onChange={(e) => changeLanguage(e.target.value)}
               className="border border-gray-300 rounded-full text-sm px-3 py-1.5 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-400 cursor-pointer"
-<<<<<<< HEAD
-              value={i18n.language} // Ensures correct language is selected after refresh
-=======
               value={i18n.language}
->>>>>>> d4f975e76cc767f82897a178dbcb3e1e1f6d1009
             >
               <option value="en">English</option>
               <option value="hi">हिन्दी</option>
@@ -164,14 +128,10 @@ const Header = () => {
             </select>
           </div>
 
-<<<<<<< HEAD
-          <FiSettings className="hover:text-teal-600 cursor-pointer" />
-=======
           {/* Settings (Desktop Only) */}
           <FiSettings className="hidden md:block hover:text-teal-600 cursor-pointer" />
 
           {/* Cart */}
->>>>>>> d4f975e76cc767f82897a178dbcb3e1e1f6d1009
           <Link to="/cart">
             <div className="relative cursor-pointer">
               <FiShoppingCart className="hover:text-teal-600" />
@@ -180,13 +140,9 @@ const Header = () => {
               </span>
             </div>
           </Link>
-<<<<<<< HEAD
-          <Link to="/login">
-=======
 
           {/* Login (Desktop Only) */}
           <Link to="/login" className="hidden md:block">
->>>>>>> d4f975e76cc767f82897a178dbcb3e1e1f6d1009
             <button className="text-sm px-4 py-1.5 bg-teal-600 text-white rounded-full hover:bg-teal-700 transition">
               {t("login")}
             </button>

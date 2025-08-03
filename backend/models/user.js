@@ -1,20 +1,18 @@
 const mongoose = require("mongoose");
+
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-    
     },
     email: {
         type: String,
         required: true,
         unique: true,
-    
     },
     password: {
         type: String,
         required: true,
-        
     },
     role: {
         type: String,
@@ -35,6 +33,10 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: true,
     },
+    isVerified: {
+        type: Boolean,
+        default: false,
+    },
     profilePicture: {
         type: String, // URL to the profile picture
         default: "",
@@ -43,17 +45,19 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Medicines",
     }],
-    cart:[{
-        type: mongoose.Schema.Types.ObjectId,   
+    cart: [{
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Medicines",
     }],
-    orders: [{  
+    orders: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Orders",
     }],
-
-
-},{
+    verificationCode: {
+        type: String,
+    },
+}, {
     timestamps: true,
 });
+
 module.exports = mongoose.model("User", userSchema);
