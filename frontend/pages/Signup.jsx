@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -16,6 +16,9 @@ export default function Signup() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
   const [popupType, setPopupType] = useState("success");
+
+    const navigate = useNavigate(); // ✅ initialize navigate
+
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -60,6 +63,9 @@ export default function Signup() {
           password: "",
           confirmPassword: "",
         });
+               setTimeout(() => {
+          navigate("/login"); // ✅ redirect to login page after delay
+        }, 1000); // allow popup to be visible briefly
       } else {
         showPopup(result.message || "Signup failed", "error");
       }

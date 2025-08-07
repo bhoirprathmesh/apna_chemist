@@ -1,35 +1,73 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const OTP = () => {
   const [otp, setOtp] = useState('');
+  const [timer, setTimer] = useState(60); // 60 second countdown
+  const [isResendDisabled, setIsResendDisabled] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
-
   const email = location.state?.email;
+
+  // Timer countdown effect
+  useEffect(() => {
+    let countdown;
+    if (timer > 0) {
+      countdown = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+    } else {
+      setIsResendDisabled(false); // enable resend after timer ends
+    }
+    return () => clearInterval(countdown);
+  }, [timer]);
 
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
-
     try {
       const response = await fetch('http://localhost:3000/api/v1/verify-otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({email,  verificationCode: otp }),
+        body: JSON.stringify({ email, verificationCode: otp }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
         alert('OTP verified successfully!');
-        navigate('/'); // or wherever
+        navigate('/');
       } else {
         alert(data.message || 'OTP verification failed');
       }
     } catch (error) {
       console.error('OTP verification error:', error);
+      alert('Something went wrong');
+    }
+  };
+
+  const handleResendOtp = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/resend-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('OTP resent successfully!');
+        setTimer(60); // restart timer
+        setIsResendDisabled(true);
+      } else {
+        alert(data.message || 'Failed to resend OTP');
+      }
+    } catch (error) {
+      console.error('Resend OTP error:', error);
       alert('Something went wrong');
     }
   };
@@ -56,6 +94,19 @@ const OTP = () => {
             Verify OTP
           </button>
         </form>
+
+        <div className="text-center mt-4 text-sm text-gray-600">
+          {isResendDisabled ? (
+            <span>Resend OTP in {timer}s</span>
+          ) : (
+            <button
+              onClick={handleResendOtp}
+              className="text-teal-600 hover:underline"
+            >
+              Resend OTP
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

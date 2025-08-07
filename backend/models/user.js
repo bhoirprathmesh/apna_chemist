@@ -59,6 +59,7 @@ const userSchema = new mongoose.Schema({
     }],
     verificationCode: {
         type: String,
+        default: null,
     },
 }, {
     timestamps: true,

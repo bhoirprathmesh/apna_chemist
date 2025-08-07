@@ -78,16 +78,19 @@ router.post("/login-in", async (req, res) => {
 
     // Generate a 6-digit verification code (OTP)
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-    const otpExpiry = new Date(Date.now() + 60 * 1000); // 1 minute from now
 
-    // Store it in the user's document (for now without expiry)
+    // Set OTP and expiry (60 seconds)
     user.verificationCode = verificationCode;
+    user.otpExpiresAt = new Date(Date.now() + 60 * 1000); // 1 minute from now
     await user.save();
-    sendVerificationcode(user.email, verificationCode);
-    // Respond with success (but don't send OTP)
+
+    // Send OTP via email
+    await sendVerificationcode(user.email, verificationCode);
+
+    // Respond to frontend
     return res.status(200).json({ 
-      message: "Verification code generated and stored in database. Please verify it.",
-      email: user.email  // So frontend can pass it to /verify-otp
+      message: "Verification code sent. Please check your email.",
+      email: user.email // To be used for /verify-otp
     });
 
   } catch (error) {
@@ -99,39 +102,86 @@ router.post("/verify-otp", async (req, res) => {
   try {
     const { email, verificationCode } = req.body;
 
-    console.log("Verifying OTP for:", email);
-    console.log("Entered OTP:", verificationCode);
-
+    // Find the user by email
     const user = await User.findOne({ email });
 
     if (!user) {
-      console.log("User not found");
       return res.status(404).json({ message: "User not found" });
     }
 
-    console.log("Stored OTP:", user.verificationCode);
-    console.log("OTP expiry:", user.otpExpiresAt);
+    // Check if OTP is expired
+    if (!user.otpExpiresAt || new Date() > user.otpExpiresAt) {
+      return res.status(400).json({ message: "OTP has expired. Please request a new one." });
+    }
 
+    // Check if OTP matches
     if (user.verificationCode !== verificationCode) {
-      console.log("OTP mismatch");
       return res.status(400).json({ message: "Invalid OTP" });
     }
 
-    if (!user.otpExpiresAt || new Date() > user.otpExpiresAt) {
-      console.log("OTP expired");
-      return res.status(400).json({ message: "OTP expired" });
-    }
-
+    // ✅ Mark user as verified
     user.isVerified = true;
+
+    // ✅ Clear OTP and expiry
     user.verificationCode = null;
     user.otpExpiresAt = null;
+
     await user.save();
 
-    console.log("OTP verified successfully");
-    return res.status(200).json({ message: "OTP verified successfully" });
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    return res.status(200).json({
+      message: "OTP verified successfully",
+      token,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        isVerified: user.isVerified, // optional to include in response
+      },
+    });
+
   } catch (error) {
-    console.error("OTP verification error:", error);
+    console.error(error);
     return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+router.post("/resend-otp", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Optional: Check if it's too soon to resend
+    const now = new Date();
+    if (user.otpExpiresAt && now < user.otpExpiresAt) {
+      const remaining = Math.ceil((user.otpExpiresAt - now) / 1000);
+      return res.status(400).json({ message: `Please wait ${remaining}s before resending OTP.` });
+    }
+
+    // Generate and send new OTP
+    const newOtp = Math.floor(100000 + Math.random() * 900000).toString();
+    user.verificationCode = newOtp;
+    user.otpExpiresAt = new Date(Date.now() + 60 * 1000);
+    await user.save();
+
+    await sendVerificationcode(user.email, newOtp);
+
+    res.status(200).json({ message: "OTP resent successfully." });
+
+  } catch (error) {
+    console.error("Resend OTP error:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
