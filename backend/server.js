@@ -15,9 +15,12 @@ app.use(express.json()); // Parse JSON body
 // Routes
 const user = require("./routes/user");
 const cart = require("./routes/cart");
+const medicine = require("./routes/medicine");
 
 app.use("/api/v1", user);
 app.use("/api/v1", cart);
+app.use("/api/v1", medicine);
+
 
 // Start server
 app.listen(process.env.PORT, () => {
