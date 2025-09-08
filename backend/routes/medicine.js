@@ -7,7 +7,7 @@ const router = express.Router();
 // Add new medicine
 router.post("/add", async (req, res) => {
   try {
-    const { name, price, description, stock, expiryDate, category, imageUrl } = req.body;
+    const { name, price, description, stock, expiryDate, category,brand,imageUrl } = req.body;
 
     if (!name || !price) {
       return res.status(400).json({ message: "Name and Price are required!" });
@@ -17,6 +17,7 @@ router.post("/add", async (req, res) => {
       name,
       price,
       description,
+      brand,
       stock,
       expiryDate,
       category,
@@ -26,6 +27,7 @@ router.post("/add", async (req, res) => {
     await newMedicine.save();
     res.status(201).json({ message: "Medicine added successfully!", medicine: newMedicine });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Error adding medicine", error: error.message });
   }
 });
