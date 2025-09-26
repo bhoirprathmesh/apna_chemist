@@ -1,35 +1,31 @@
-// backend/routes/medicineRoutes.js
-const express = require("express");
-const Medicine = require("../models/Medicine");
+const router = require("express").Router();
+const Medicine = require("../models/medicine");
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
+const authenticate = require("./userAuth");
 
-const router = express.Router();
-
-// Add new medicine
-router.post("/add", async (req, res) => {
+// add a medicine
+router.post("/add-medi", authenticate, async (req, res) => {
   try {
-    const { name, price, description, stock, expiryDate, category,brand,imageUrl } = req.body;
-
-    if (!name || !price) {
-      return res.status(400).json({ message: "Name and Price are required!" });
+    const { id } = req.headers;
+    const user = await User.findById(id);
+    if (user.role != "admin") {
+      return res.status(400).json({ message: "User is not valid" });
     }
-
-    const newMedicine = new Medicine({
-      name,
-      price,
-      description,
-      brand,
-      stock,
-      expiryDate,
-      category,
-      imageUrl,
+    const medicine = new Medicine({
+      name: req.body.name,
+      brand: req.body.brand,
+      price: req.body.price,
+      expiryDate: req.body.expiryDate,
+      category: req.body.category,
+      prescriptionRequired: req.body.prescriptionRequired,
+      description: req.body.description,
+      image: req.body.image,
     });
 
-    await newMedicine.save();
-    res.status(201).json({ message: "Medicine added successfully!", medicine: newMedicine });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Error adding medicine", error: error.message });
-  }
+    await medicine.save();
+    return res.status(200).json({message:"medicine added succesfully"})
+  } catch (error) {}
 });
 
-module.exports = router;
+module.exports=router;
