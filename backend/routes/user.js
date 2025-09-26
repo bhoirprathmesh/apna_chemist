@@ -214,6 +214,48 @@ router.post("/resend-otp", async (req, res) => {
   }
 });
 
+// get-user-details
+router.get("get-user-details",authenticate,async(req,res)=>{
+  try{
+    const {id} = req.headers;
+    const data = await User.findById(id).select("-password");
+    return res.status(200).json(data);
 
-// ============================
+  }
+  catch(error){
+    return res.status(500).json({message:"Internal server error"});
+
+  }
+})
+
+// update a user information
+router.put("update-user-address",authenticate,async(req,res)=>{
+  try{
+    const {id} = req.headers;
+    const {address} = req.body;
+     if (!address || address.trim() === "") {
+      return res.status(400).json({ message: "Address is required" });
+    }
+    const updateaddress = await User.findByIdAndUpdate(
+      id,
+      {address : address},
+      { new :true}
+    );
+
+    if(!updateaddress){
+      return res.status(404).json("user not found");
+    }
+ return res.status(200).json({
+      message: "Address updated successfully",
+      data: updateaddress, // optional: send back updated data
+    });
+  }
+  catch(error){
+    return res.status(500).json({message:"Internal server error"});
+  }
+})
+
+
+
+
 module.exports = router;
