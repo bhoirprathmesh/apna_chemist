@@ -2,6 +2,7 @@ const router = require("express").Router();
 const User = require("../models/user.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const authenticate = require("./userAuth.js");
 const { sendVerificationcode } = require("../middlewares/Email.js");
 require("dotenv").config();
 
@@ -215,7 +216,7 @@ router.post("/resend-otp", async (req, res) => {
 });
 
 // get-user-details
-router.get("get-user-details",authenticate,async(req,res)=>{
+router.get("/get-user-details", authenticate,async(req,res)=>{
   try{
     const {id} = req.headers;
     const data = await User.findById(id).select("-password");
